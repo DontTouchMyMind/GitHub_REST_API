@@ -10,7 +10,7 @@ source_url = 'https://api.github.com/repos/'
 
 
 def form_response(data, function_name):
-    """Формируем ответ, согласно структуре."""
+    """Response handler."""
     result = []
     if function_name == 'get_all_pulls':
         for entity in data:
@@ -41,7 +41,7 @@ def form_response(data, function_name):
 
 @base_controllers
 def get_repos_info(repos_name):
-    """Получить детали репозитория."""
+    """Get repo details."""
     r = requests.get(f'{source_url}{repos_name}')
     data = r.json()
     return jsonify(data)
@@ -49,7 +49,7 @@ def get_repos_info(repos_name):
 
 @base_controllers
 def get_all_pulls(repos_name):
-    """Получить все пулл реквесты."""
+    """Get a list of all pull requests."""
     r = requests.get(f'{source_url}{repos_name}/pulls?state=all')
     data = r.json()
     return jsonify(form_response(data, get_all_pulls.__name__))
@@ -57,7 +57,7 @@ def get_all_pulls(repos_name):
 
 @base_controllers
 def get_pulls_not_merged(repos_name):
-    """Получить все пулл реквесты, не смерженные две недели."""
+    """Get a list of all pull requests which have not been merged for two weeks or more."""
     r = requests.get(f'{source_url}{repos_name}/pulls?state=all')
     data = r.json()
     check_day = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=14)
@@ -76,7 +76,7 @@ def get_pulls_not_merged(repos_name):
 
 @base_controllers
 def get_issues(repos_name):
-    """Получить список Issues"""
+    """Get a list of all issues."""
     r = requests.get(f'{source_url}{repos_name}/issues?state=all')
     data = r.json()
     return jsonify(form_response(data, get_issues.__name__))
@@ -84,7 +84,7 @@ def get_issues(repos_name):
 
 @base_controllers
 def get_all_forks(repos_name):
-    """Получить количество форков."""
+    """Get a list of all forks."""
     r = requests.get(f'{source_url}{repos_name}/forks')
     data = r.json()
     return jsonify(form_response(data, get_all_forks.__name__))

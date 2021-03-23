@@ -2,7 +2,7 @@ import functools
 
 
 def base_controllers(func):
-    """Декоратор для обработки исключений в контроллерах."""
+    """Decorator for handling exceptions in controllers."""
 
     @functools.wraps(func)
     def inner(*args, **kwargs):
